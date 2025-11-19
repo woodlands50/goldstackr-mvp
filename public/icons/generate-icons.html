@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate GoldStackr Icons</title>
+</head>
+<body>
+    <h1>Icon Generator</h1>
+    <p>Open browser console and run the script below to download icons</p>
+
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <script>
+        // Simple icon generator for GoldStackr
+        function generateIcon(size) {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = size;
+            canvas.height = size;
+
+            // Background gradient (gold)
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#FFD700');
+            gradient.addColorStop(1, '#B8860B');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+
+            // Draw coin symbol
+            ctx.fillStyle = '#1E293B';
+            ctx.font = `bold ${size * 0.6}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('$', size / 2, size / 2);
+
+            // Convert to blob and download
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `icon${size}.png`;
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+        }
+
+        // Generate all sizes
+        console.log('Generating icons...');
+        setTimeout(() => generateIcon(16), 100);
+        setTimeout(() => generateIcon(32), 200);
+        setTimeout(() => generateIcon(48), 300);
+        setTimeout(() => generateIcon(128), 400);
+        console.log('Icons generated! Check your downloads folder.');
+    </script>
+</body>
+</html>
