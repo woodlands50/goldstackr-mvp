@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create, StateCreator } from 'zustand';
 import { WatchlistItem } from '@/types';
 
 interface WatchlistState {
@@ -13,28 +13,31 @@ interface WatchlistState {
   setError: (error: string | null) => void;
 }
 
-export const useWatchlistStore = create<WatchlistState>((set) => ({
+const storeCreator: StateCreator<WatchlistState> = (set) => ({
   items: [],
   isLoading: false,
   error: null,
 
-  addItem: (item) => set((state) => ({
-    items: [...state.items, item],
-  })),
+  addItem: (item: WatchlistItem) =>
+    set((state: WatchlistState) => ({ items: [...state.items, item] })),
 
-  removeItem: (id) => set((state) => ({
-    items: state.items.filter(item => item.id !== id),
-  })),
+  removeItem: (id: string) =>
+    set((state: WatchlistState) => ({
+      items: state.items.filter((item: WatchlistItem) => item.id !== id),
+    })),
 
-  updateItem: (id, updates) => set((state) => ({
-    items: state.items.map(item =>
-      item.id === id ? { ...item, ...updates } : item
-    ),
-  })),
+  updateItem: (id: string, updates: Partial<WatchlistItem>) =>
+    set((state: WatchlistState) => ({
+      items: state.items.map((item: WatchlistItem) =>
+        item.id === id ? { ...item, ...updates } : item
+      ),
+    })),
 
-  setItems: (items) => set({ items }),
+  setItems: (items: WatchlistItem[]) => set({ items }),
 
-  setLoading: (loading) => set({ isLoading: loading }),
+  setLoading: (loading: boolean) => set({ isLoading: loading }),
 
-  setError: (error) => set({ error }),
-}));
+  setError: (error: string | null) => set({ error }),
+});
+
+export const useWatchlistStore = create<WatchlistState>(storeCreator);
