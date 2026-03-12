@@ -1,7 +1,4 @@
-/* Import base styles for content script */
-@import url('../index.css');
-
-/* Ensure content script styles are scoped */
+/* Scoped styles for the GoldStackr content script overlay */
 #goldstackr-overlay-root {
   all: initial;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
